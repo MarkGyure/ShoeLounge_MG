@@ -4841,7 +4841,6 @@ GameObject:
   - component: {fileID: 453524319771698733}
   - component: {fileID: 573904668279315908}
   - component: {fileID: 7666223836473320680}
-  - component: {fileID: 5352007399524684707}
   m_Layer: 0
   m_Name: Cube (7)
   m_TagString: Untagged
@@ -4863,7 +4862,7 @@ Transform:
   m_Children:
   - {fileID: 2801911786915692443}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4040976061150065966
 MeshFilter:
@@ -4948,19 +4947,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bde9d1824e4b8104c87a2d829d5a8650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5352007399524684707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3554077980379513845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff16c259d368be045a8533b4f55e51b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MoneyController: {fileID: 0}
-  cost: 10
-  item: {fileID: 3554077980379513845}
-  particle: {fileID: 1211955605424621768}

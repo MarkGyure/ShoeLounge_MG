@@ -1,11 +1,16 @@
+/*****************************************************************************
+// File Name : TextHoverEffect.cs
+// Author : Mark Gyure
+// Creation Date : 3/24/2024
+//
+// Brief Description : Handles the text hover effect
+*****************************************************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class TextHoverEffect : MonoBehaviour
 {
     [SerializeField] private GameObject fakeButton;
- 
     private void OnMouseOver()
     {
         if (fakeButton.gameObject.transform.localScale.magnitude < 2f)
@@ -31,3 +36,4 @@ public class TextHoverEffect : MonoBehaviour
         }
     }
 }
+

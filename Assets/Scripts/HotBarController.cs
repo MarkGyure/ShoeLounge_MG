@@ -1,7 +1,13 @@
+/*****************************************************************************
+// File Name : HotbarController.cs
+// Author : Mark Gyure
+// Creation Date : 3/24/2024
+//
+// Brief Description : Handles the hotbar
+*****************************************************************************/
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class HotBarController : MonoBehaviour
 {
     [SerializeField] private GameObject red;
@@ -28,7 +34,9 @@ public class HotBarController : MonoBehaviour
     [SerializeField] private bool purpleOn;
     [SerializeField] private bool lavenderOn;
     [SerializeField] private bool pinkOn;
-    // Start is called before the first frame update
+  /// <summary>
+  /// called before first frame, sets all visuals to not be seen
+  /// </summary>
     void Start()
     {
         red.SetActive(false);
@@ -45,32 +53,46 @@ public class HotBarController : MonoBehaviour
         pink.SetActive(false);    
     }
 
-    // Update is called once per frame
+  /// <summary>
+  /// called once per frame and checks to see if the bool is on, if it is, it makes it appear
+  /// </summary>
     void Update()
     {
         if (redOn)
             red.SetActive(true);
+        else red.SetActive(false);
         if (orangeOn)
-            red.SetActive(true);
+            oranage.SetActive(true);
+        else oranage.SetActive(false);
         if (yellowOn)
-            red.SetActive(true);
+            yellow.SetActive(true);
+        else yellow.SetActive(false);
         if (limeOn)
-            red.SetActive(true);
+            lime.SetActive(true); 
+        else lime.SetActive(false);
         if (greenOn)
-            red.SetActive(true);
+            green.SetActive(true); 
+        else green.SetActive(false);
         if (tealOn)
-            red.SetActive(true);
+            teal.SetActive(true); 
+        else teal.SetActive(false);
         if (cyanOn)
-            red.SetActive(true);
+            cyan.SetActive(true); 
+        else cyan.SetActive(false);
         if (babyBlueOn)
-            red.SetActive(true);
+            babyBlue.SetActive(true); 
+        else babyBlue.SetActive(false);
         if (blueOn)
-            red.SetActive(true);
+            blue.SetActive(true); 
+        else blue.SetActive(false);
         if (purpleOn)
-            red.SetActive(true);
+            purple.SetActive(true); 
+        else purple.SetActive(false);
         if (lavenderOn)
-            red.SetActive(true);
+            lavender.SetActive(true); 
+        else lavender.SetActive(false);
         if (pinkOn)
-            red.SetActive(true);
+            pink.SetActive(true); 
+        else pink.SetActive(false);
     }
 }
