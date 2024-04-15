@@ -6,15 +6,33 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Lounge.unity
-    guid: 6e86852e842980040a27e0278dcb71d0
-  - enabled: 1
     path: Assets/Scenes/MenuScreen.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Store.unity
-    guid: fe76248de1e9afc41b941b736551a300
-  - enabled: 1
-    path: Assets/Scenes/Work.unity
+    path: Assets/Scenes/Tutorial.unity
     guid: a5a3c6a49606881438ab2bf0f735bbf7
+  - enabled: 1
+    path: Assets/Scenes/LoungeDay1.unity
+    guid: 6e86852e842980040a27e0278dcb71d0
+  - enabled: 1
+    path: Assets/Scenes/Sport.unity
+    guid: 741998161094ffe48b4e034d85e86a56
+  - enabled: 1
+    path: Assets/Scenes/LoungeDay2.unity
+    guid: 4fa24a16d97c719459d7386de7fd5303
+  - enabled: 1
+    path: Assets/Scenes/Converse.unity
+    guid: 00e36611187c244478234e2f160f5562
+  - enabled: 1
+    path: Assets/Scenes/LoungeDay3.unity
+    guid: 44c54c15e110ac446a95c1bb17253e2b
+  - enabled: 1
+    path: Assets/Scenes/Fancy.unity
+    guid: 1a966869b3643a64e8c42e52da877bbc
+  - enabled: 1
+    path: Assets/Scenes/EndScreen.unity
+    guid: 492a39740e441e240acf9ca88c0c0310
+  - enabled: 1
+    path: Assets/Scenes/FixConverse.unity
+    guid: a5c20cb4b9e47d240bfda8cb125fe809
   m_configObjects: {}

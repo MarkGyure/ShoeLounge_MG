@@ -11,6 +11,9 @@ using UnityEngine;
 public class TextHoverEffect : MonoBehaviour
 {
     [SerializeField] private GameObject fakeButton;
+    /// <summary>
+    /// 
+    /// </summary>
     private void OnMouseOver()
     {
         if (fakeButton.gameObject.transform.localScale.magnitude < 2f)
@@ -19,6 +22,9 @@ public class TextHoverEffect : MonoBehaviour
             Debug.Log("used MouseOver");
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     private void OnMouseEnter()
     {
         if (fakeButton.gameObject.transform.localScale.magnitude < 2f)
@@ -27,6 +33,9 @@ public class TextHoverEffect : MonoBehaviour
             Debug.Log("used MouseEnter");
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     private void OnMouseExit()
     {
         if (fakeButton.gameObject.transform.localScale.magnitude > 1.5f)

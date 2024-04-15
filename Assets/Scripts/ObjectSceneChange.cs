@@ -5,15 +5,16 @@
 //
 // Brief Description : changes scene from the load button
 *****************************************************************************/
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 public class ObjectSceneChange : MonoBehaviour
 {
-    public string SceneName;
+    /// <summary>
+    /// goes to the next scene on the build index
+    /// </summary>
     private void OnMouseUp()
     {
-        SceneManager.LoadScene(SceneName);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex + 1);
     }
 }
