@@ -1,34 +1,44 @@
-using System.Collections;
-using System.Collections.Generic;
+/*****************************************************************************
+// File Name : TutorialItemSwitch.cs
+// Author : Mark Gyure
+// Creation Date : 4/14/2024
+//
+// Brief Description : Handles the item switch button for the tutorial level
+*****************************************************************************/
 using UnityEngine;
 
 public class TutorialItemSwitch : MonoBehaviour
 {
-    public GameObject sponge; // Reference to the sponge object
-    public GameObject soap; // Reference to the soap object
-
-    
-    [SerializeField] private bool spongeActive = false; // Flag to track if sponge is active
-    [SerializeField] private bool soapActive = false; // Flag to track if soap is active
-
-    // Method to toggle between sponge and soap
+    [SerializeField] private GameObject sponge;
+    [SerializeField] private GameObject soap;
+    [SerializeField] private bool spongeActive = false; 
+    [SerializeField] private bool soapActive = false;
+    /// <summary>
+    /// sets the sponge as the default active tool
+    /// </summary>
     private void Start()
     {
         spongeActive = true;
     }
+    /// <summary>
+    /// getter for the sponge active var
+    /// </summary>
     public bool SpongeActive
     {
         get { return spongeActive; }
     }
-
-    // Public property to access soapActive
+    /// <summary>
+    /// getter for the soap active var
+    /// </summary>
     public bool SoapActive
     {
         get { return soapActive; }
     }
+    /// <summary>
+    /// If sponge is active, deactivate it and activate soap and if soap is active, deactivate it and activate sponge
+    /// </summary>
     public void ToggleObjects()
     {
-        // If sponge is active, deactivate it and activate soap
         if (spongeActive)
         {
             spongeActive = false;
@@ -40,7 +50,6 @@ public class TutorialItemSwitch : MonoBehaviour
             if (soap != null)
                 soap.GetComponent<MeshRenderer>().enabled = true;
         }
-        // If soap is active, deactivate it and activate sponge
         else if (soapActive)
         {
             spongeActive = true;

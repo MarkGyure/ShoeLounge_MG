@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ScoreData
   m_EditorClassIdentifier: 
   playerScore: 0
-  sophieScore: 16
-  jaceScore: 20
-  laurieScore: 25
-  marianneScore: 29
+  sophieScore: 0
+  jaceScore: 0
+  laurieScore: 0
+  marianneScore: 0

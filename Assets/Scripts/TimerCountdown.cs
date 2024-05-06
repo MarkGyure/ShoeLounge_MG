@@ -18,6 +18,8 @@ public class TimerCountdown : MonoBehaviour
     [SerializeField] private Button doneButton;
     [SerializeField] private Button wrongLeaveButton;
     [SerializeField] private bool isTutorial = false;
+    [SerializeField] AudioSource maleTooLong;
+    [SerializeField] AudioSource maleLeaving;
     public bool timesUp1 { get => timesUp; set => timesUp = value; }
     [SerializeField] private ShoeCleaner shoeCleaner;
     private bool hasExecuted = false;
@@ -50,8 +52,13 @@ public class TimerCountdown : MonoBehaviour
         {
             hasExecuted = true;
             Debug.Log("playing sound");
+            maleTooLong.Play();
         }
-        if (totalTime > 0 && isTutorial == false)
+        if (Mathf.FloorToInt(totalTime / 60) == 10) // Check if it's 2 PM (10:00 AM + 4 hours)
+        {
+            maleTooLong.Play();
+        }
+            if (totalTime > 0 && isTutorial == false)
         {
             totalTime -= Time.deltaTime;
             float minutes = Mathf.FloorToInt(totalTime / 60);
@@ -90,6 +97,7 @@ public class TimerCountdown : MonoBehaviour
             if (totalTime < 1)
             {
                 timerText.text = "Time's up";
+                maleLeaving.Play();
                 timesUp = true;
                 loseBoard.gameObject.SetActive(true);
                 doneButton.interactable = false;

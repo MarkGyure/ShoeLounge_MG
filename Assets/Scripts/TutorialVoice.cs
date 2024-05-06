@@ -1,25 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
+/*****************************************************************************
+// File Name : TutorialVoice.cs 
+// Author : Mark Gyure
+// Creation Date : 4/14/2024
+//
+// Brief Description : handles the tutorial voice dialogue
+*****************************************************************************/
 using UnityEngine;
-
 public class TutorialVoice : MonoBehaviour
 {
     [SerializeField] private AudioClip audioClip; // Assign your audio clip in the Inspector
-
     private AudioSource audioSource;
-
+    /// <summary>
+    /// Gets the AudioSource component attached to this GameObject and makes sure its assigned, and plays it
+    /// </summary>
     private void Start()
     {
-        // Get the AudioSource component attached to this GameObject
         audioSource = GetComponent<AudioSource>();
-
-        // Check if an AudioClip is assigned
         if (audioClip != null)
         {
-            // Assign the audio clip to the AudioSource component
             audioSource.clip = audioClip;
-
-            // Play the audio
             audioSource.Play();
         }
         else

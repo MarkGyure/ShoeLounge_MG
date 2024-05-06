@@ -3,32 +3,63 @@
 // Author : Mark Gyure
 // Creation Date : 3/24/2024
 //
-// Brief Description : Handles hoe the shoe is rotated using right click on the mouse
+// Brief Description : Handles how the shoe is rotated using right click on the mouse
 *****************************************************************************/
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 public class ObjectRotator : MonoBehaviour
 {
-    private Vector3 dragOrigin;
+    private Vector2 dragOrigin;
     private bool isDragging = false;
     [SerializeField] private TimerCountdown timerCountdown;
-    /// <summary>
-    /// checks to see if the right mouse is held down and dragging(not using new input system yet but oopsies)
-    /// </summary>
+    private InputAction rotateAction;
+
+    void OnEnable()
+    {
+        // Enable the rotation action
+        rotateAction.Enable();
+    }
+
+    void OnDisable()
+    {
+        // Disable the rotation action
+        rotateAction.Disable();
+    }
+
+    void Awake()
+    {
+        // Create the rotation action
+        rotateAction = new InputAction(binding: "<Mouse>/rightButton");
+
+        // Add listener for the rotation action
+        rotateAction.performed += ctx => StartDrag();
+        rotateAction.canceled += ctx => EndDrag();
+    }
+
+    void StartDrag()
+    {
+        if (timerCountdown.timesUp1 || timerCountdown.allDone1)
+            return;
+
+        isDragging = true;
+        dragOrigin = Mouse.current.position.ReadValue();
+    }
+
+    void EndDrag()
+    {
+        if (timerCountdown.timesUp1)
+            return;
+
+        isDragging = false;
+    }
+
     void Update()
     {
-        if (Input.GetMouseButtonDown(1) && timerCountdown.timesUp1 == false && timerCountdown.allDone1 == false)
+        if (isDragging && !timerCountdown.timesUp1)
         {
-            isDragging = true;
-            dragOrigin = Input.mousePosition;
-        }
-        if (Input.GetMouseButtonUp(1) && timerCountdown.timesUp1 == false)
-        {
-            isDragging = false;
-        }
-        if (isDragging && timerCountdown.timesUp1 == false)
-        {
-            Vector3 currentMousePosition = Input.mousePosition;
-            Vector3 difference = currentMousePosition - dragOrigin;
+            Vector2 currentMousePosition = Mouse.current.position.ReadValue();
+            Vector2 difference = currentMousePosition - dragOrigin;
             float rotationX = difference.y * 0.5f;
             float rotationY = -difference.x * 0.5f;
             transform.Rotate(Vector3.up, rotationY, Space.World);

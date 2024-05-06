@@ -5,8 +5,6 @@
 //
 // Brief Description : Checks the tutorial and tells the other class that it is the tutorial
 *****************************************************************************/
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 public class TutorialCheck : MonoBehaviour
 {

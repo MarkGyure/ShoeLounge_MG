@@ -7,6 +7,7 @@
 *****************************************************************************/
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class ShoeCleaner : MonoBehaviour
 {
     [SerializeField] private Texture2D dirtyTexture;
@@ -14,45 +15,77 @@ public class ShoeCleaner : MonoBehaviour
     [SerializeField] private Texture2D soapTexture;
     [SerializeField] private Renderer shoeRenderer;
     [SerializeField] private int brushSize = 20;
-    [SerializeField] private float brushStrength = 1.0f; 
-    private Color[] originalColors; 
+    private Color[] originalColors;
     [SerializeField] private TimerCountdown timerCountdown;
     [SerializeField] private ItemSwitch itemSwitch;
     [SerializeField] private int cleanedPixelCount = 0;
+    [SerializeField] private int RequiredCleanedPixels = 250000;
+    [SerializeField] private TMP_Text playerScore;
+    [SerializeField] private ScoreData scoreData;
+    private InputAction mouseClickAction;
+    private InputAction mouseDragAction;
+    private bool isDragging = false;
+    private int mappedScore;
+    /// <summary>
+    /// getter for CleanedPixelCount
+    /// </summary>
     public int CleanedPixelCount
     {
         get { return cleanedPixelCount; }
     }
-    [SerializeField] private int RequiredCleanedPixels = 250000; 
-    private int mappedScore;
     /// <summary>
-    /// get method for the mappedScore
+    /// getter for MappedScore
     /// </summary>
     public int MappedScore
     {
         get { return mappedScore; }
     }
-    [SerializeField] private TMP_Text playerScore;
-    [SerializeField] private ScoreData scoreData;
     /// <summary>
-    /// Sets originalColors to an array of pixels that is on the dirtyTexture Texture
+    /// enables mouse click and drag action
+    /// </summary>
+    void OnEnable()
+    {
+        mouseClickAction.Enable();
+        mouseDragAction.Enable();
+    }
+    /// <summary>
+    /// disables click and drag action. also resets the shoes texture so its not permanently effected.
+    /// </summary>
+    void OnDisable()
+    {
+        mouseClickAction.Disable();
+        mouseDragAction.Disable();
+        ResetShoe();
+    }
+    /// <summary>
+    ///Creates the mouse click action and drag action instead of doing in an input actions class. adds listeners for 
+    ///starting and canceling dragging and clicking.
+    /// </summary>
+    void Awake()
+    {
+        mouseClickAction = new InputAction(binding: "<Mouse>/leftButton");
+        mouseDragAction = new InputAction(binding: "<Mouse>/leftButton");
+        mouseClickAction.started += ctx => OnMouseClick();
+        mouseDragAction.started += ctx => OnMouseDrag();
+        mouseDragAction.canceled += ctx => OnMouseDragEnd();
+    }
+    /// <summary>
+    /// Before the first framem it stores the original pixels of the dirty texture so it doesnt get permanently ruined
     /// </summary>
     void Start()
     {
-        // Store the original colors of the dirty texture
         originalColors = dirtyTexture.GetPixels();
     }
     /// <summary>
-    /// when left click is held it casts a ray from the camera to the position of the mouse and if it hits the collider
-    /// of the specified gameobject, it will find the coords of the texture that it hit and go to the same coords of
-    /// the clean texture and apply them in place of that spot depending on which brush is being used
+    /// every frame it checks for the mouse's location and checks if the player is dragging the mouse. If they are, 
+    /// it will apply the correlating texture based on the tool that is selected
     /// </summary>
-    void Update()
+    void Update() 
     {
-        if (Input.GetMouseButton(0) && timerCountdown.timesUp1 == false && timerCountdown.allDone1 == false)
+        if (isDragging && !timerCountdown.timesUp1 && !timerCountdown.allDone1)
         {
             RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
             if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
             {
@@ -72,7 +105,30 @@ public class ShoeCleaner : MonoBehaviour
         }
     }
     /// <summary>
-    /// finds coords of mouse position and applies the soap texture over that area
+    /// when mouse is clicked, sets dragging to true
+    /// </summary>
+    void OnMouseClick()
+    {
+        isDragging = true;
+    }
+    /// <summary>
+    /// when mouse is dragged, also sets dragging to true
+    /// </summary>
+    void OnMouseDrag()
+    {
+        isDragging = true;
+    }
+    /// <summary>
+    /// when its done dragging, it updates the player score according to the pixels changed and sets isDragging to 
+    /// false.
+    /// </summary>
+    void OnMouseDragEnd()
+    {
+        isDragging = false;
+        UpdateScore(); 
+    }
+    /// <summary>
+    /// applies soap texture within the x and y brush radius at the same location of the dirty texture.
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
@@ -155,6 +211,26 @@ public class ShoeCleaner : MonoBehaviour
         }
     }
     /// <summary>
+    /// updates score according the cleanedPixelCount
+    /// </summary>
+    private void UpdateScore()
+    {
+        // Calculate the new mapped score
+        int newMappedScore = MapScore(cleanedPixelCount);
+        // Check if the new score is different from the current score
+        if (newMappedScore != mappedScore)
+        {
+            mappedScore = newMappedScore;
+            // Update the player's score in the scoreData ScriptableObject
+            scoreData.AddPlayerScore("player");
+            playerScore.text = "You: " + scoreData.GetPlayerScore("player").ToString();
+        }
+        if (cleanedPixelCount >= RequiredCleanedPixels)
+        {
+            Debug.Log("Win Condition Met!");
+        }
+    }
+    /// <summary>
     /// has the startinf changed pixels, and max, along with the min score and the max. calculates the current
     /// "cleaned" pixels and converts that huge number into a more managable 1-20
     /// </summary>
@@ -167,14 +243,15 @@ public class ShoeCleaner : MonoBehaviour
         int minTarget = 1;
         int maxTarget = 20;
         // Calculate the mapped score
-        float mappedScore = minTarget + (maxTarget - minTarget) * ((pixelCount - minOriginal) / (maxOriginal - minOriginal));
+        float mappedScore = minTarget + (maxTarget - minTarget) * ((pixelCount - minOriginal) / (maxOriginal - 
+            minOriginal));
         // Round the mapped score to the nearest integer
         int roundedScore = Mathf.RoundToInt(mappedScore);
         // Ensure the score is within the target range
         return Mathf.Clamp(roundedScore, minTarget, maxTarget);
     }
     /// <summary>
-    /// takes the saved original colros and sets the dirty texture equal to those so it doesnt ruin the texture forever
+    /// sets the dirty texture back to the original texture so its not ruined after cleaning.
     /// </summary>
     public void ResetShoe()
     {
@@ -182,12 +259,5 @@ public class ShoeCleaner : MonoBehaviour
         dirtyTexture.SetPixels(originalColors);
         dirtyTexture.Apply();
         shoeRenderer.material.mainTexture = dirtyTexture;
-    }
-    /// <summary>
-    /// resets shoe texture when scene is left
-    /// </summary>
-    private void OnDisable()
-    {
-        ResetShoe();
     }
 }

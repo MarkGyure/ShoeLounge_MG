@@ -2,7 +2,6 @@
 // File Name : SceneChange.cs
 // Author : Mark Gyure
 // Creation Date : 3/24/2024
-//
 // Brief Description : handles Scene changes
 *****************************************************************************/
 using TMPro;

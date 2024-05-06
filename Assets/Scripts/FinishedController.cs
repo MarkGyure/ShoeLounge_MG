@@ -32,7 +32,6 @@ public class FinishedController : MonoBehaviour
     [SerializeField] private TMP_Text playerScore;
     [SerializeField] private ScoreData scoreData;
     [SerializeField] private Button doneButton;
-    [SerializeField] private Button swapButton;
     /// <summary>
     /// tells game that the round has ended, sets tutorial to true to stop timer, makes buttons not interactable anymore
     /// subtracts 1 screo from the player bc for some reason it gives them 1 for free when they press the done button.
@@ -45,7 +44,6 @@ public class FinishedController : MonoBehaviour
     {
         timerCountdown.allDone1 = true;
         timerCountdown.SetTutorial();
-        swapButton.interactable = false;
         doneButton.interactable = false;
         scoreData.AddPlayerScore("player", -1);
         // Add 1 point to the player's score
@@ -64,7 +62,7 @@ public class FinishedController : MonoBehaviour
         scoreData.AddPlayerScore("marianne", marianneRandomScore);
         // Update the TMP_Text objects with the new scores
         jaceScore.text = "Jace: " + scoreData.GetPlayerScore("jace").ToString();
-        sophieScore.text = "Sophie: " + scoreData.GetPlayerScore("sophie").ToString();
+        sophieScore.text = "Sofia: " + scoreData.GetPlayerScore("sophie").ToString();
         laurieScore.text = "Laurie: " + scoreData.GetPlayerScore("laurie").ToString();
         marianneScore.text = "Marianne: " + scoreData.GetPlayerScore("marianne").ToString();
         // Play audio based on the cleanedPixelCount

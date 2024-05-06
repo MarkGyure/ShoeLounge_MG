@@ -1,58 +1,118 @@
-using System.Collections;
-using System.Collections.Generic;
+/*****************************************************************************
+// File Name : ItemSwitch.cs
+// Author : Mark Gyure
+// Creation Date : 4/14/2024
+//
+// Brief Description : Controlls how the items are switched 
+*****************************************************************************/
 using UnityEngine;
-
 public class ItemSwitch : MonoBehaviour
 {
-    public GameObject sponge; // Reference to the sponge object
-    public GameObject soap; // Reference to the soap object
-
-    
-    [SerializeField] private bool spongeActive = false; // Flag to track if sponge is active
-    [SerializeField] private bool soapActive = false; // Flag to track if soap is active
-
-    [SerializeField] private TimerCountdown timerCountdown;
-
-    // Method to toggle between sponge and soap
-    private void Start()
+    [SerializeField] private GameObject sponge;
+    [SerializeField] private GameObject soap;
+    [SerializeField] private GameObject forceps;
+    [SerializeField] private GameObject brush;
+    [SerializeField] private bool soapActive = false;
+    [SerializeField] private bool spongeActive = false;
+    [SerializeField] private bool forcepsActive = false;
+    [SerializeField] private bool brushActive = false;
+    /// <summary>
+    /// getter for the pliars
+    /// </summary>
+    public bool ForcepsActive
     {
-        spongeActive = true;
+        get { return forcepsActive; }
     }
-    public bool SpongeActive
+    /// <summary>
+    /// getter for the glue
+    /// </summary>
+    public bool BrushActive
     {
-        get { return spongeActive; }
+        get { return brushActive; }
     }
-
-    // Public property to access soapActive
+    /// <summary>
+    /// getter for the soap
+    /// </summary>
     public bool SoapActive
     {
         get { return soapActive; }
     }
-    public void ToggleObjects()
+    /// <summary>
+    /// getter for sponge
+    /// </summary>
+    public bool SpongeActive
     {
-        // If sponge is active, deactivate it and activate soap
-        if (spongeActive && timerCountdown.timesUp1 == false)
-        {
-            spongeActive = false;
-            soapActive = true;
-
-            if (sponge != null)
-                sponge.GetComponent<MeshRenderer>().enabled = false;
-
-            if (soap != null)
-                soap.GetComponent<MeshRenderer>().enabled = true;
-        }
-        // If soap is active, deactivate it and activate sponge
-        else if (soapActive && timerCountdown.timesUp1 == false)
-        {
-            spongeActive = true;
-            soapActive = false;
-
-            if (sponge != null)
-                sponge.GetComponent<MeshRenderer>().enabled = true;
-
-            if (soap != null)
-                soap.GetComponent<MeshRenderer>().enabled = false;
-        }
+        get { return spongeActive; }
+    }
+    /// <summary>
+    /// before the first frame gets all the action listeners for getting the tools
+    /// </summary>
+    private void Start()
+    {
+        var events = FindObjectOfType<ToolActivationEvents>();
+        events.spongeActivated.AddListener(ActivateSponge);
+        events.soapActivated.AddListener(ActivateSoap);
+        events.forcepsActivated.AddListener(ActivateForceps);
+        events.brushActivated.AddListener(ActivateBrush);
+    }
+    /// <summary>
+    /// activaes sponge
+    /// </summary>
+    private void ActivateSponge()
+    {
+        sponge.SetActive(false);
+        soap.SetActive(true);
+        forceps.SetActive(true);
+        brush.SetActive(true);
+        spongeActive = true;
+        soapActive = false;
+        forcepsActive = false;
+        brushActive = false;
+        Debug.Log("sponge activated");
+    }
+    /// <summary>
+    /// activaes soap
+    /// </summary>
+    private void ActivateSoap()
+    {
+        sponge.SetActive(true);
+        soap.SetActive(false);
+        forceps.SetActive(true);
+        brush.SetActive(true);
+        spongeActive = false;
+        soapActive = true;
+        forcepsActive = false;
+        brushActive = false;
+        Debug.Log("soap activated");
+    }
+    /// <summary>
+    /// activaes pliars
+    /// </summary>
+    private void ActivateForceps()
+    {
+        sponge.SetActive(true);
+        soap.SetActive(true);
+        forceps.SetActive(false);
+        brush.SetActive(true);
+        spongeActive = false;
+        soapActive = false;
+        forcepsActive = true;
+        brushActive = false;
+        Debug.Log("forceps activated");
+    }
+    /// <summary>
+    /// activaes glue
+    /// </summary>
+    private void ActivateBrush()
+    {
+        sponge.SetActive(true);
+        soap.SetActive(true);
+        forceps.SetActive(true);
+        brush.SetActive(false);
+        spongeActive = false;
+        soapActive = false;
+        forcepsActive = false;
+        brushActive = true;
+        Debug.Log("forceps activated");
     }
 }

@@ -5,44 +5,47 @@
 //
 // Brief Description : Handles the text hover effect
 *****************************************************************************/
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class TextHoverEffect : MonoBehaviour
 {
-    [SerializeField] private GameObject fakeButton;
-    /// <summary>
-    /// 
-    /// </summary>
-    private void OnMouseOver()
+    private Vector3 originalScale;
+    private bool isHovering = false;
+    private float hoverScaleFactor = 1.5f;
+    private void Start()
     {
-        if (fakeButton.gameObject.transform.localScale.magnitude < 2f)
-        {
-            fakeButton.gameObject.transform.localScale *= 1.5f;
-            Debug.Log("used MouseOver");
-        }
+        originalScale = transform.localScale;
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    private void OnMouseEnter()
+    private void Update()
     {
-        if (fakeButton.gameObject.transform.localScale.magnitude < 2f)
+        if (Mouse.current != null)
         {
-            fakeButton.gameObject.transform.localScale *= 1.5f;
-            Debug.Log("used MouseEnter");
+            // Cast a ray from the mouse cursor into the scene
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            RaycastHit hit;
+
+            // Check if the ray intersects with this object
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
+            {
+                // Mouse is hovering over this object
+                isHovering = true;
+            }
+            else
+            {
+                // Mouse is not hovering over this object
+                isHovering = false;
+            }
         }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    private void OnMouseExit()
-    {
-        if (fakeButton.gameObject.transform.localScale.magnitude > 1.5f)
+        // Scale the object accordingly
+        if (isHovering)
         {
-            fakeButton.gameObject.transform.localScale /= 1.5f;
-            Debug.Log("used MouseExit");
+            // Enlarge the object when hovering
+            transform.localScale = originalScale * hoverScaleFactor;
+        }
+        else
+        {
+            // Shrink the object back to its original size
+            transform.localScale = originalScale;
         }
     }
 }
-
